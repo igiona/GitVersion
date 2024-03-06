@@ -52,10 +52,10 @@
         </PackageReference>
     </ItemGroup>
     <ItemGroup Condition=" '$(IsUnitTestProject)' == 'false' and $(MSBuildProjectName.EndsWith('.Schema')) == 'false' and '$(DisableApiAnalyzers)' == 'false'">
-        <PackageReference Include="Microsoft.CodeAnalysis.PublicApiAnalyzers">
+        <!-- <PackageReference Include="Microsoft.CodeAnalysis.PublicApiAnalyzers">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-        </PackageReference>
+        </PackageReference> -->
     </ItemGroup>
     <ItemGroup Condition=" '$(IsUnitTestProject)' == 'true' ">
         <PackageReference Include="Microsoft.NET.Test.Sdk"/>
