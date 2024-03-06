@@ -1,8 +1,12 @@
 using System.Text.Encodings.Web;
+using System.Text.Json.Serialization.Metadata;
 using GitVersion.Extensions;
 using GitVersion.Helpers;
 
 namespace GitVersion.OutputVariables;
+
+[JsonSerializable(typeof(VersionVariablesJsonModel))]
+public partial class VersionVariablesJsonModelSerializerContext : JsonSerializerContext { }
 
 public class VersionVariableSerializer(IFileSystem fileSystem) : IVersionVariableSerializer
 {
@@ -93,7 +97,16 @@ public class VersionVariableSerializer(IFileSystem fileSystem) : IVersionVariabl
         fileSystem.WriteAllText(filePath, json);
     }
 
-    private static JsonSerializerOptions JsonSerializerOptions() => new() { WriteIndented = true, Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping, Converters = { new VersionVariablesJsonStringConverter() } };
+    private static JsonSerializerOptions JsonSerializerOptions() => new()
+    {
+        WriteIndented = true,
+        Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
+        Converters = { new VersionVariablesJsonStringConverter() },
+
+        TypeInfoResolver = JsonSerializer.IsReflectionEnabledByDefault
+                ? new DefaultJsonTypeInfoResolver()
+                : VersionVariablesJsonModelSerializerContext.Default
+    };
 
     private static object? ChangeType(object? value, Type type)
     {
