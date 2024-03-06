@@ -32,7 +32,7 @@ internal sealed partial class GitRepository
     {
         if (gitDirectory?.EndsWith(".git") == false)
         {
-            gitDirectory = Repository.Discover(gitDirectory);
+            gitDirectory = System.IO.Path.Combine(gitDirectory, ".git");// Repository.Discover(gitDirectory);
         }
         this.repositoryLazy = new(() => new Repository(gitDirectory));
     }
