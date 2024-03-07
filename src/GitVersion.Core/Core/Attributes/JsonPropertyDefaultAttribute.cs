@@ -1,7 +1,9 @@
+using System.Diagnostics.CodeAnalysis;
 using GitVersion.Extensions;
 
 namespace GitVersion.Attributes;
 
+[RequiresUnreferencedCode("Calls System.Text.Json.JsonSerializer.Serialize")]
 [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
 public sealed class JsonPropertyDefaultAttribute : JsonAttribute
 {

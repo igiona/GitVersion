@@ -3,7 +3,7 @@ using GitVersion.Logging;
 
 namespace GitVersion.VersionCalculation;
 
-internal sealed class ContinuousDeliveryVersionCalculator(ILog log, IRepositoryStore repositoryStore, Lazy<GitVersionContext> versionContext)
+internal sealed class ContinuousDeliveryVersionCalculator(ILog log, IRepositoryStore repositoryStore, GitVersionContext versionContext)
     : VersionCalculatorBase(log, repositoryStore, versionContext), IDeploymentModeCalculator
 {
     public SemanticVersion Calculate(SemanticVersion semanticVersion, ICommit? baseVersionSource)
@@ -15,7 +15,7 @@ internal sealed class ContinuousDeliveryVersionCalculator(ILog log, IRepositoryS
             {
                 throw new WarningException("Continuous delivery requires a pre-release tag.");
             }
-
+            Console.WriteLine("ConDel");
             return CalculateInternal(semanticVersion, baseVersionSource);
         }
     }

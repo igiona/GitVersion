@@ -1,7 +1,9 @@
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace GitVersion.Agents;
 
+[RequiresUnreferencedCode("Calls IGitVersionModule.FindAllDerivedTypes")]
 public class GitVersionBuildAgentsModule : IGitVersionModule
 {
     public void RegisterTypes(IServiceCollection services)

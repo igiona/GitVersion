@@ -19,14 +19,14 @@ internal class GitVersionCalculateTool : IGitVersionCalculateTool
     private readonly IGitVersionCacheKeyFactory cacheKeyFactory;
 
     private readonly IOptions<GitVersionOptions> options;
-    private readonly Lazy<GitVersionContext> versionContext;
+    private readonly GitVersionContext versionContext;
 
-    private GitVersionContext Context => this.versionContext.Value;
+    private GitVersionContext Context => this.versionContext;
 
     public GitVersionCalculateTool(ILog log, INextVersionCalculator nextVersionCalculator,
         IVariableProvider variableProvider, IGitPreparer gitPreparer,
         IGitVersionCache gitVersionCache, IGitVersionCacheKeyFactory cacheKeyFactory,
-        IOptions<GitVersionOptions> options, Lazy<GitVersionContext> versionContext)
+        IOptions<GitVersionOptions> options, GitVersionContext versionContext)
     {
         this.log = log.NotNull();
 

@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using GitVersion.Configuration;
 using GitVersion.Core;
 using GitVersion.Extensions;
@@ -9,7 +10,8 @@ namespace GitVersion.VersionCalculation;
 /// BaseVersionSource is the tag's commit.
 /// Increments if the tag is not the current commit.
 /// </summary>
-internal sealed class TaggedCommitVersionStrategy(ITaggedSemanticVersionRepository taggedSemanticVersionRepository, Lazy<GitVersionContext> versionContext)
+[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]
+internal sealed class TaggedCommitVersionStrategy(ITaggedSemanticVersionRepository taggedSemanticVersionRepository, GitVersionContext versionContext)
     : VersionStrategyBase(versionContext)
 {
     private readonly ITaggedSemanticVersionRepository taggedSemanticVersionRepository = taggedSemanticVersionRepository.NotNull();

@@ -9,7 +9,7 @@ namespace GitVersion.VersionCalculation;
 
 internal class NextVersionCalculator(
     ILog log,
-    Lazy<GitVersionContext> versionContext,
+    GitVersionContext versionContext,
     IEnumerable<IDeploymentModeCalculator> deploymentModeCalculators,
     IEnumerable<IVersionStrategy> versionStrategies,
     IEffectiveBranchConfigurationFinder effectiveBranchConfigurationFinder,
@@ -18,12 +18,12 @@ internal class NextVersionCalculator(
     : INextVersionCalculator
 {
     private readonly ILog log = log.NotNull();
-    private readonly Lazy<GitVersionContext> versionContext = versionContext.NotNull();
+    private readonly GitVersionContext versionContext = versionContext.NotNull();
     private readonly IVersionStrategy[] versionStrategies = versionStrategies.NotNull().ToArray();
     private readonly IEffectiveBranchConfigurationFinder effectiveBranchConfigurationFinder = effectiveBranchConfigurationFinder.NotNull();
     private readonly IIncrementStrategyFinder incrementStrategyFinder = incrementStrategyFinder.NotNull();
 
-    private GitVersionContext Context => this.versionContext.Value;
+    private GitVersionContext Context => this.versionContext;
 
     public virtual SemanticVersion FindVersion()
     {
@@ -101,7 +101,7 @@ internal class NextVersionCalculator(
         string? label = effectiveConfiguration.GetBranchSpecificLabel(Context.CurrentBranch.Name, null);
         SemanticVersionWithTag? currentCommitTaggedVersion = taggedSemanticVersionsOfCurrentCommit
             .Where(element => element.Value.IsMatchForBranchSpecificLabel(label)).Max();
-
+        Console.WriteLine("TryGetSemanticVersion: currentCommitTaggedVersion = {0}", currentCommitTaggedVersion);
         if (currentCommitTaggedVersion is not null)
         {
             SemanticVersionBuildMetaData semanticVersionBuildMetaData = new(
@@ -146,6 +146,7 @@ internal class NextVersionCalculator(
     private NextVersion CalculateNextVersion(IBranch branch, IGitVersionConfiguration configuration)
     {
         var nextVersions = GetNextVersions(branch, configuration).ToArray();
+        Console.WriteLine($"Got {nextVersions.Length}");
         log.Separator();
         var maxVersion = nextVersions.Max()!;
 
@@ -221,6 +222,7 @@ internal class NextVersionCalculator(
                 throw new GitVersionException("No commits found on the current branch.");
 
             var nextVersions = GetNextVersionsInternal().ToList();
+
             if (nextVersions.Count == 0)
                 throw new GitVersionException("No base versions determined on the current branch.");
             return nextVersions;
@@ -229,12 +231,15 @@ internal class NextVersionCalculator(
         IEnumerable<NextVersion> GetNextVersionsInternal()
         {
             var effectiveBranchConfigurations = this.effectiveBranchConfigurationFinder.GetConfigurations(branch, configuration).ToArray();
+            Console.WriteLine($"Next {effectiveBranchConfigurations.Count()}");
             foreach (var effectiveBranchConfiguration in effectiveBranchConfigurations)
             {
                 this.log.Info($"Calculating base versions for '{effectiveBranchConfiguration.Branch.Name}'");
+                Console.WriteLine($"Calculating base versions for '{effectiveBranchConfiguration.Branch.Name}'");
                 var atLeastOneBaseVersionReturned = false;
                 foreach (var versionStrategy in this.versionStrategies)
                 {
+                    Console.WriteLine($"[Using '{versionStrategy.GetType().Name}' strategy]");
                     using (this.log.IndentLog($"[Using '{versionStrategy.GetType().Name}' strategy]"))
                     {
                         foreach (var baseVersion in versionStrategy.GetBaseVersions(effectiveBranchConfiguration))
@@ -252,6 +257,7 @@ internal class NextVersionCalculator(
 
                 if (!atLeastOneBaseVersionReturned)
                 {
+                    Console.WriteLine("Fallback!");
                     var baseVersion = new BaseVersion("Fallback base version", true, SemanticVersion.Empty, null, null);
                     if (TryGetNextVersion(out var nextVersion, effectiveBranchConfiguration, baseVersion))
                         yield return nextVersion;

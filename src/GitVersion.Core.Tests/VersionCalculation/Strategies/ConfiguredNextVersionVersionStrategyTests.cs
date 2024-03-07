@@ -55,7 +55,7 @@ public class ConfiguredNextVersionVersionStrategyTests : TestBase
         contextBuilder.Build();
         contextBuilder.ServicesProvider.ShouldNotBeNull();
         var strategy = contextBuilder.ServicesProvider.GetServiceForType<IVersionStrategy, ConfiguredNextVersionVersionStrategy>();
-        var context = contextBuilder.ServicesProvider.GetRequiredService<Lazy<GitVersionContext>>().Value;
+        var context = contextBuilder.ServicesProvider.GetRequiredService<GitVersionContext>();
         var branchMock = GitToolsTestingExtensions.CreateMockBranch("main", GitToolsTestingExtensions.CreateMockCommit());
 
         strategy.ShouldNotBeNull();

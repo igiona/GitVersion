@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using GitVersion.Configuration;
 using GitVersion.Extensions;
 
@@ -8,7 +9,8 @@ namespace GitVersion.VersionCalculation;
 /// BaseVersionSource is null.
 /// Does not increment.
 /// </summary>
-internal class ConfiguredNextVersionVersionStrategy(Lazy<GitVersionContext> versionContext) : VersionStrategyBase(versionContext)
+[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]
+internal class ConfiguredNextVersionVersionStrategy(GitVersionContext versionContext) : VersionStrategyBase(versionContext)
 {
     public override IEnumerable<BaseVersion> GetBaseVersions(EffectiveBranchConfiguration configuration)
     {

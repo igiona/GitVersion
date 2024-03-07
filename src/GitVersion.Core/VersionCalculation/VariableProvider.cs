@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using GitVersion.Configuration;
 using GitVersion.Extensions;
 using GitVersion.Helpers;
@@ -5,6 +6,7 @@ using GitVersion.OutputVariables;
 
 namespace GitVersion.VersionCalculation;
 
+[RequiresUnreferencedCode("Calls StringFormatWithExtension.FormatWithFormatWith")]
 internal sealed class VariableProvider(IEnvironment environment) : IVariableProvider
 {
     private readonly IEnvironment environment = environment.NotNull();

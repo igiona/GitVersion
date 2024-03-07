@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using GitVersion.Agents;
 using GitVersion.Configuration;
 using GitVersion.Extensions;
@@ -9,16 +10,21 @@ using Microsoft.Extensions.Options;
 
 namespace GitVersion;
 
+//[RequiresUnreferencedCode("Calls many dyn stuff")]
 internal class Program
 {
     private readonly Action<IServiceCollection>? overrides;
 
     internal Program(Action<IServiceCollection>? overrides = null) => this.overrides = overrides;
 
+    [DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof(Program))]
+    [RequiresUnreferencedCode("Calls many dyn stuff")]
     private static async Task Main(string[] args) => await new Program().RunAsync(args);
 
+    [RequiresUnreferencedCode("Calls many dyn stuff")]
     internal Task RunAsync(string[] args) => CreateHostBuilder(args).Build().RunAsync();
 
+    [RequiresUnreferencedCode("Calls many dyn stuff")]
     private IHostBuilder CreateHostBuilder(string[] args) =>
         new HostBuilder()
             .ConfigureAppConfiguration((_, configApp) => configApp.AddCommandLine(args))

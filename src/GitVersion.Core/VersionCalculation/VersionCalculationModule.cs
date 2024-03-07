@@ -1,8 +1,10 @@
+using System.Diagnostics.CodeAnalysis;
 using GitVersion.Extensions;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace GitVersion.VersionCalculation;
 
+[RequiresUnreferencedCode("Calls VariableProvider")]
 public class VersionCalculationModule : IGitVersionModule
 {
     public void RegisterTypes(IServiceCollection services)

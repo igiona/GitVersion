@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using GitVersion.Extensions;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -7,7 +8,8 @@ public interface IGitVersionModule
 {
     void RegisterTypes(IServiceCollection services);
 
-    static IEnumerable<Type> FindAllDerivedTypes<T>(Assembly? assembly)
+    [RequiresUnreferencedCode("Searches the provided type T in assembly via reflection.")]
+    static IEnumerable<Type> FindAllDerivedTypes<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicMethods)] T>(Assembly? assembly)
     {
         assembly.NotNull();
 

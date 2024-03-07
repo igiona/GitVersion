@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using GitVersion.Common;
 using GitVersion.Configuration;
 using GitVersion.Extensions;
@@ -20,7 +21,8 @@ namespace GitVersion.VersionCalculation;
 /// Increments if the tag is not the current commit (same as base strategy).
 /// </para>
 /// </summary>
-internal class TrackReleaseBranchesVersionStrategy(IRepositoryStore repositoryStore, Lazy<GitVersionContext> versionContext)
+[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]
+internal class TrackReleaseBranchesVersionStrategy(IRepositoryStore repositoryStore, GitVersionContext versionContext)
     : VersionStrategyBase(versionContext)
 {
     private readonly VersionInBranchNameVersionStrategy releaseVersionStrategy = new(repositoryStore, versionContext);

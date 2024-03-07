@@ -1,8 +1,10 @@
+using System.Diagnostics.CodeAnalysis;
 using System.Linq.Expressions;
 using System.Text.RegularExpressions;
 
 namespace GitVersion.Helpers;
 
+[RequiresUnreferencedCode("Calls System.Linq.Expressions.Expression.PropertyOrField")]
 internal static class StringFormatWithExtension
 {
     // This regex matches an expression to replace.
