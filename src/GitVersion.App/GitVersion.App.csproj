@@ -7,6 +7,7 @@
         <PlatformTarget>AnyCPU</PlatformTarget>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
         <PublishAot>true</PublishAot>
+        <TrimMode>partial</TrimMode>
     </PropertyGroup>
 
     <PropertyGroup Condition=" '$(PackAsTool)' == 'true' ">
