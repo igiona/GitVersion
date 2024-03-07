@@ -6,6 +6,8 @@
         <AssemblyName>gitversion</AssemblyName>
         <PlatformTarget>AnyCPU</PlatformTarget>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <TrimMode>partial</TrimMode>
+        <PublishTrimmed>true</PublishTrimmed>
     </PropertyGroup>
 
     <PropertyGroup Condition=" '$(PackAsTool)' == 'true' ">

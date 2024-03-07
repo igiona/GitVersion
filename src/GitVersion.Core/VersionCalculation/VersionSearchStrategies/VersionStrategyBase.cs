@@ -1,13 +1,15 @@
+using System.Diagnostics.CodeAnalysis;
 using GitVersion.Configuration;
 using GitVersion.Extensions;
 
 namespace GitVersion.VersionCalculation;
 
-public abstract class VersionStrategyBase(Lazy<GitVersionContext> versionContext) : IVersionStrategy
+[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]
+public abstract class VersionStrategyBase(GitVersionContext versionContext) : IVersionStrategy
 {
-    private readonly Lazy<GitVersionContext> versionContext = versionContext.NotNull();
+    private readonly GitVersionContext versionContext = versionContext.NotNull();
 
-    protected GitVersionContext Context => this.versionContext.Value;
+    protected GitVersionContext Context => this.versionContext;
 
     public abstract IEnumerable<BaseVersion> GetBaseVersions(EffectiveBranchConfiguration configuration);
 }

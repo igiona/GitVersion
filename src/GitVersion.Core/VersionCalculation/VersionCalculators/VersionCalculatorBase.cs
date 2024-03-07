@@ -4,13 +4,13 @@ using GitVersion.Logging;
 
 namespace GitVersion.VersionCalculation;
 
-internal abstract class VersionCalculatorBase(ILog log, IRepositoryStore repositoryStore, Lazy<GitVersionContext> versionContext)
+internal abstract class VersionCalculatorBase(ILog log, IRepositoryStore repositoryStore, GitVersionContext versionContext)
 {
     protected readonly ILog log = log.NotNull();
     protected readonly IRepositoryStore repositoryStore = repositoryStore.NotNull();
-    private readonly Lazy<GitVersionContext> versionContext = versionContext.NotNull();
+    private readonly GitVersionContext versionContext = versionContext.NotNull();
 
-    protected GitVersionContext Context => this.versionContext.Value;
+    protected GitVersionContext Context => this.versionContext;
 
     protected SemanticVersionBuildMetaData CreateVersionBuildMetaData(ICommit? baseVersionSource)
     {

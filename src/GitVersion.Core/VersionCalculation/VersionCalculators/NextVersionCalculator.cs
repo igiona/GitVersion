@@ -9,7 +9,7 @@ namespace GitVersion.VersionCalculation;
 
 internal class NextVersionCalculator(
     ILog log,
-    Lazy<GitVersionContext> versionContext,
+    GitVersionContext versionContext,
     IEnumerable<IDeploymentModeCalculator> deploymentModeCalculators,
     IEnumerable<IVersionStrategy> versionStrategies,
     IEffectiveBranchConfigurationFinder effectiveBranchConfigurationFinder,
@@ -18,12 +18,12 @@ internal class NextVersionCalculator(
     : INextVersionCalculator
 {
     private readonly ILog log = log.NotNull();
-    private readonly Lazy<GitVersionContext> versionContext = versionContext.NotNull();
+    private readonly GitVersionContext versionContext = versionContext.NotNull();
     private readonly IVersionStrategy[] versionStrategies = versionStrategies.NotNull().ToArray();
     private readonly IEffectiveBranchConfigurationFinder effectiveBranchConfigurationFinder = effectiveBranchConfigurationFinder.NotNull();
     private readonly IIncrementStrategyFinder incrementStrategyFinder = incrementStrategyFinder.NotNull();
 
-    private GitVersionContext Context => this.versionContext.Value;
+    private GitVersionContext Context => this.versionContext;
 
     public virtual SemanticVersion FindVersion()
     {

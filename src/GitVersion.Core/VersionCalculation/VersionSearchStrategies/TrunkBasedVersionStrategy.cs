@@ -1,4 +1,5 @@
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using GitVersion.Common;
 using GitVersion.Configuration;
 using GitVersion.Core;
@@ -9,8 +10,9 @@ using GitVersion.VersionCalculation.TrunkBased.Trunk;
 
 namespace GitVersion.VersionCalculation;
 
+[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]
 internal sealed class TrunkBasedVersionStrategy(
-    Lazy<GitVersionContext> context,
+    GitVersionContext context,
     IRepositoryStore repositoryStore,
     ITaggedSemanticVersionRepository taggedSemanticVersionRepository,
     IIncrementStrategyFinder incrementStrategyFinder)

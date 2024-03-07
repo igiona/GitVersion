@@ -1,4 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <IsTrimmable>false</IsTrimmable>
+    </PropertyGroup>
     <ItemGroup>
       <None Remove="SupportedWorkflows\TrunkBased\v1.yml" />
     </ItemGroup>

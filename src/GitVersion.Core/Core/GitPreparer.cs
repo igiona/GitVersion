@@ -16,11 +16,11 @@ internal class GitPreparer : IGitPreparer
     private readonly IGitRepositoryInfo repositoryInfo;
     private readonly ICurrentBuildAgent buildAgent;
     private readonly RetryAction<LockedFileException> retryAction;
-    private readonly Lazy<GitVersionContext> versionContext;
+    private readonly GitVersionContext versionContext;
     private const string DefaultRemoteName = "origin";
 
     public GitPreparer(ILog log, IEnvironment environment, ICurrentBuildAgent buildAgent, IOptions<GitVersionOptions> options,
-        IMutatingGitRepository repository, IGitRepositoryInfo repositoryInfo, Lazy<GitVersionContext> versionContext)
+        IMutatingGitRepository repository, IGitRepositoryInfo repositoryInfo, GitVersionContext versionContext)
     {
         this.log = log.NotNull();
         this.environment = environment.NotNull();
@@ -272,7 +272,7 @@ Please run `git {GitExtensions.CreateGitLogArgs(100)}` and submit it along with 
                 this.log.Warning($"Choosing {branchWithoutSeparator.Name.Canonical} as it is the only branch without / or - in it. " + moveBranchMsg);
                 Checkout(branchWithoutSeparator.Name.Canonical);
             }
-            else if (!this.versionContext.Value.IsCurrentCommitTagged)
+            else if (!this.versionContext.IsCurrentCommitTagged)
             {
                 throw new WarningException("Failed to try and guess branch to use. " + moveBranchMsg);
             }

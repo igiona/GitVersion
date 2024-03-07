@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using GitVersion.Common;
 using GitVersion.Core;
 using GitVersion.Extensions;
@@ -8,6 +9,7 @@ using Microsoft.Extensions.Options;
 
 namespace GitVersion;
 
+[RequiresUnreferencedCode("Calls VersionCalculationModule")]
 public class GitVersionCoreModule : IGitVersionModule
 {
     public void RegisterTypes(IServiceCollection services)
@@ -22,11 +24,12 @@ public class GitVersionCoreModule : IGitVersionModule
         services.AddSingleton<IBranchRepository, BranchRepository>();
 
         services.AddSingleton<IGitVersionContextFactory, GitVersionContextFactory>();
+
         services.AddSingleton(sp =>
         {
             var options = sp.GetRequiredService<IOptions<GitVersionOptions>>();
             var contextFactory = sp.GetRequiredService<IGitVersionContextFactory>();
-            return new Lazy<GitVersionContext>(() => contextFactory.Create(options.Value));
+            return contextFactory.Create(options.Value);
         });
 
         services.AddModule(new GitVersionCommonModule());
