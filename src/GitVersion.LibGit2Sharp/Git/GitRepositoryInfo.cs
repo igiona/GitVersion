@@ -63,8 +63,7 @@ internal class GitRepositoryInfo : IGitRepositoryInfo
     {
         var gitDirectory = !DynamicGitRepositoryPath.IsNullOrWhiteSpace()
             ? DynamicGitRepositoryPath
-            :
-            Path.Combine(gitVersionOptions.WorkingDirectory, ".git"); // Repository.Discover(gitVersionOptions.WorkingDirectory);
+            : Repository.Discover(gitVersionOptions.WorkingDirectory);
 
         gitDirectory = gitDirectory?.TrimEnd('/', '\\');
         if (gitDirectory.IsNullOrEmpty())
@@ -83,7 +82,7 @@ internal class GitRepositoryInfo : IGitRepositoryInfo
             return gitVersionOptions.WorkingDirectory;
         }
 
-        var gitDirectory = Path.Combine(gitVersionOptions.WorkingDirectory, ".git"); // Repository.Discover(gitVersionOptions.WorkingDirectory);
+        var gitDirectory = Repository.Discover(gitVersionOptions.WorkingDirectory);
 
         if (gitDirectory.IsNullOrEmpty())
             throw new DirectoryNotFoundException("Cannot find the .git directory");
